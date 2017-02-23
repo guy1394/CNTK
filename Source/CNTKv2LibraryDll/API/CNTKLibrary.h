@@ -3477,6 +3477,7 @@ namespace CNTK
                                      const NDShape& lowerPad = {0},
                                      const NDShape& upperPad = {0},
                                      bool transpose = false,
+                                     const NDShape& outputShape = {0}, 
                                      size_t maxTempMemSizeInSamples = 0,
                                      const std::wstring& name = L"");
 

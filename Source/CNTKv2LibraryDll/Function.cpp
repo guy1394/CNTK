@@ -1174,6 +1174,7 @@ namespace CNTK
                             const NDShape& lowerPad,
                             const NDShape& upperPad,
                             bool transpose,
+                            const NDShape& outputShape, 
                             size_t maxTempMemSizeInSamples,
                             const std::wstring& name)
     {
@@ -1190,6 +1191,7 @@ namespace CNTK
         additionalProperties[PrimitiveFunction::AttributeNameLowerPad] = lowerPad;
         additionalProperties[PrimitiveFunction::AttributeNameUpperPad] = upperPad;
         additionalProperties[PrimitiveFunction::AttributeNameTranspose] = transpose;
+        additionalProperties[PrimitiveFunction::AttributeNameOutputShape] = outputShape;
         additionalProperties[PrimitiveFunction::AttributeNameMaxTempMemSizeInSamples] = maxTempMemSizeInSamples;
 
         return BinaryOp(PrimitiveOpType::Convolution, convolutionMap, operand, std::move(additionalProperties), name);
