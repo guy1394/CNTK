@@ -2702,6 +2702,7 @@ SGDParams::SGDParams(const ConfigRecordType& configSGD, size_t sizeofElemType)
     m_numSubminiBatches = configSGD(L"numSubminibatches", (size_t) 1);
 
     m_packThresholdSizeInBytes = configSGD(L"packThresholdSizeInKB", DEFAULT_PACK_THRESHOLD_SIZE_IN_KB) * 1024;
+    LOGPRINTF(stderr, "== Size to be packed is %d\n", (int)m_packThresholdSizeInBytes);
 
     if (configAALR.Exists(L"numMiniBatch4LRSearch"))
     {
