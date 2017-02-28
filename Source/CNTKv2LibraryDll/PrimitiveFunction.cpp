@@ -520,7 +520,9 @@ namespace CNTK
                             auto& strides = m_attributes[PrimitiveFunction::AttributeNameStrides].Value<NDShape>();
                             auto& lowerPad = m_attributes[PrimitiveFunction::AttributeNameLowerPad].Value<NDShape>();
                             auto& upperPad = m_attributes[PrimitiveFunction::AttributeNameUpperPad].Value<NDShape>();
-                            auto& tmpShape = m_attributes[PrimitiveFunction::AttributeNameOutputShape].Value<NDShape>();
+                            NDShape tmpShape = NDShape::Unknown; 
+                            if (m_attributes.Contains(PrimitiveFunction::AttributeNameOutputShape))
+                                tmpShape = m_attributes[PrimitiveFunction::AttributeNameOutputShape].Value<NDShape>();
                             auto sharing = AsVector<bool>(m_attributes[PrimitiveFunction::AttributeNameSharing].Value<std::vector<DictionaryValue>>());
                             auto autoPadding = AsVector<bool>(m_attributes[PrimitiveFunction::AttributeNameAutoPadding].Value<std::vector<DictionaryValue>>());
                             bool transpose = m_attributes[PrimitiveFunction::AttributeNameTranspose].Value<bool>();
@@ -538,7 +540,7 @@ namespace CNTK
                             }
                             else
                             {
-                                if (tmpShape[0] == 0)
+                                if (tmpShape.IsUnknown() || tmpShape[0] == 0)
                                 {
                                     outputShape = ConvolutionOpOutputShape(m_op, inputShape, kernelShape, outputMapCount, strides, sharing, autoPadding, lowerPad, upperPad, true, true);
                                 }
