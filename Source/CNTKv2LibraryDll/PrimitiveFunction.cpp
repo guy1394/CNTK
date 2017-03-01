@@ -534,23 +534,16 @@ namespace CNTK
                             auto originalKernelShape = kernelShape;
 
                             auto inputShape = m_inputs[1].Shape();
-                            if (!transpose)
+                            if (!transpose || tmpShape.IsUnknown() || tmpShape[0] == 0)
                             {
-                                outputShape = ConvolutionOpOutputShape(m_op, inputShape, kernelShape, outputMapCount, strides, sharing, autoPadding, lowerPad, upperPad, false, true);
+                                outputShape = ConvolutionOpOutputShape(m_op, inputShape, kernelShape, outputMapCount, strides, sharing, autoPadding, lowerPad, upperPad, transpose, true);
                             }
                             else
                             {
-                                if (tmpShape.IsUnknown() || tmpShape[0] == 0)
-                                {
-                                    outputShape = ConvolutionOpOutputShape(m_op, inputShape, kernelShape, outputMapCount, strides, sharing, autoPadding, lowerPad, upperPad, true, true);
-                                }
-                                else
-                                {
-                                    NDShape inferredInputShape = ConvolutionOpOutputShape(m_op, tmpShape, kernelShape, outputMapCount, strides, sharing, autoPadding, lowerPad, upperPad, false, true);
-                                    if (inferredInputShape != inputShape)
-                                        RuntimeError("The shape of the convolution transpose operand %ls is different from the result of convoluting the specified output argument using the provided options %ls", inputShape.AsString().c_str(), inferredInputShape.AsString().c_str());
-                                    outputShape = tmpShape; 
-                                }
+                                NDShape inferredInputShape = ConvolutionOpOutputShape(m_op, tmpShape, kernelShape, outputMapCount, strides, sharing, autoPadding, lowerPad, upperPad, false, true);
+                                if (inferredInputShape != inputShape)
+                                    RuntimeError("The shape of the convolution transpose operand %ls is different from the result of convoluting the specified output argument using the provided options %ls", inputShape.AsString().c_str(), inferredInputShape.AsString().c_str());
+                                outputShape = tmpShape; 
                             }
 
                             if (originalKernelShape != kernelShape)

@@ -114,6 +114,10 @@ public:
         {
             m_outputShape.Load(fstream); 
         }
+        else
+        {
+            m_outputShape = TensorShape(0); 
+        }
     }
 
     void CopyTo(ComputationNodeBasePtr nodeP, const std::wstring& newName, const CopyNodeFlags flags) const override
